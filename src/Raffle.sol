@@ -110,13 +110,13 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
         s_lastTimestamp = block.timestamp;
         s_raffleState = RaffleState.OPEN;
 
+        emit WinnerPicked(s_recentWinner);
+
         (bool isSuccess,) = s_recentWinner.call{value: address(this).balance}("");
 
         if (!isSuccess) {
             revert Raffle__RewardPaymentFailedUnexpectedly();
         }
-
-        emit WinnerPicked(s_recentWinner);
     }
 
     function getEntranceFee() public view returns (uint256) {
