@@ -42,7 +42,7 @@ contract HelperConfig is Script {
             entranceFee: ENTRANCE_FEE,
             gasLane: 0x474e34a077df58807dbe9c96d3c009b23b3c6d0cce433e59bbf5b34f823bc56c,
             subId: 7569,
-            callbackGasLimit: 2500000,
+            callbackGasLimit: 5000000,
             interval: 30,
             privateKey: vm.envUint("PRIVATE_KEY"),
             linkTokenAddress: 0x779877A7B0D9E8603169DdbD7836e478b4624789
@@ -55,7 +55,7 @@ contract HelperConfig is Script {
             entranceFee: ENTRANCE_FEE,
             gasLane: 0x79d3d8832d904592c0bf9818b621522c988bb8b0c05cdc3b15aea1b6e8db0c15,
             subId: 7569,
-            callbackGasLimit: 2500000,
+            callbackGasLimit: 5000000,
             interval: 30,
             privateKey: vm.envUint("PRIVATE_KEY"),
             linkTokenAddress: 0x326C977E6efc84E512bB9C30f76E30c160eD06FB
@@ -68,7 +68,7 @@ contract HelperConfig is Script {
             entranceFee: ENTRANCE_FEE,
             gasLane: 0x8af398995b04c28e9951adb9721ef74c74f93e6a478f39e7e0777be13527e7ef,
             subId: 7569,
-            callbackGasLimit: 2500000,
+            callbackGasLimit: 5000000,
             interval: 30,
             privateKey: vm.envUint("PRIVATE_KEY"),
             linkTokenAddress: 0x514910771AF9Ca656af840dff83E8264EcF986CA
@@ -76,7 +76,8 @@ contract HelperConfig is Script {
     }
 
     function createOrGetAnvilNetworkConfig() public returns (NetworkConfig memory) {
-        if (activeNetworkConfig.vrfCoordinatorV2Address != address(0)) {
+        bool isTrue = activeNetworkConfig.vrfCoordinatorV2Address != address(0);
+        if (isTrue) {
             return activeNetworkConfig;
         }
 
@@ -92,7 +93,7 @@ contract HelperConfig is Script {
             entranceFee: ENTRANCE_FEE,
             gasLane: 0x8af398995b04c28e9951adb9721ef74c74f93e6a478f39e7e0777be13527e7ef,
             subId: 0,
-            callbackGasLimit: 2500000,
+            callbackGasLimit: 5000000,
             interval: 30,
             privateKey: ANVIL_PRIVATE_KEY,
             linkTokenAddress: address(linkToken)
