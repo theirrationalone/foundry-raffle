@@ -9,9 +9,7 @@ import {AutomationCompatibleInterface} from "@chainlink/contracts/src/v0.8/inter
 contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
     error Raffle__NotPaidEnoughEntranceFee(uint256 _feePaid, uint256 _feeRequired);
     error Raffle__RaffleStateNotOpen(uint256 _raffleState);
-    error Raffle__UpkeepNotNeeded(
-        uint256 raffleBalance, uint256 raffleState, uint256 entrantsLength, uint256 timePassed
-    );
+    error Raffle__UpkeepNotNeeded(uint256 raffleBalance, uint256 raffleState, uint256 entrantsLength);
     error Raffle__RewardPaymentFailedUnexpectedly();
 
     enum RaffleState {
@@ -58,12 +56,13 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
     }
 
     function enterRaffle() external payable {
-        if (msg.value < i_entranceFee) {
-            revert Raffle__NotPaidEnoughEntranceFee(msg.value, i_entranceFee);
+        uint256 currentRaffleState = uint256(s_raffleState);
+        if (s_raffleState != RaffleState.OPEN) {
+            revert Raffle__RaffleStateNotOpen(currentRaffleState);
         }
 
-        if (s_raffleState != RaffleState.OPEN) {
-            revert Raffle__RaffleStateNotOpen(uint256(s_raffleState));
+        if (msg.value < i_entranceFee) {
+            revert Raffle__NotPaidEnoughEntranceFee(msg.value, i_entranceFee);
         }
 
         s_entrants.push(payable(msg.sender));
@@ -83,13 +82,9 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
     function performUpkeep(bytes calldata) external override {
         (bool upkeepNeeded,) = checkUpkeep("");
 
+        uint256 currentRaffleState = uint256(s_raffleState);
         if (!upkeepNeeded) {
-            revert Raffle__UpkeepNotNeeded(
-                address(this).balance,
-                uint256(s_raffleState),
-                s_entrants.length,
-                ((block.timestamp - s_lastTimestamp - 1) - i_interval)
-            );
+            revert Raffle__UpkeepNotNeeded(address(this).balance, currentRaffleState, s_entrants.length);
         }
 
         s_raffleState = RaffleState.CALCULATING;
