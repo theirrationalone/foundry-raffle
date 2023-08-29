@@ -29,7 +29,7 @@ contract RaffleTest is Test {
     function setUp() external {
         HelperConfig config;
         DeployRaffle deployer = new DeployRaffle();
-        (s_raffle, config) = deployer.run();
+        (s_raffle, config, s_subId) = deployer.run();
         (s_vrfCoordinatorV2Address, s_entranceFee, s_gasLane, s_subId, s_callbackGasLimit, s_interval,,) =
             config.activeNetworkConfig();
 
