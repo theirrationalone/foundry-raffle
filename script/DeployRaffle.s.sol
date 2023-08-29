@@ -9,7 +9,7 @@ import {HelperConfig} from "./HelperConfig.s.sol";
 import {CreateSubscription, FundSubscription, AddConsumer} from "./Interactions.s.sol";
 
 contract DeployRaffle is Script {
-    function run() external returns (Raffle, HelperConfig) {
+    function run() external returns (Raffle, HelperConfig, uint64) {
         HelperConfig config = new HelperConfig();
         (
             address vrfCoordinatorV2Address,
@@ -37,6 +37,6 @@ contract DeployRaffle is Script {
         AddConsumer addConsumer = new AddConsumer();
         addConsumer.addConsumer(address(raffle), vrfCoordinatorV2Address, subId, privateKey);
 
-        return (raffle, config);
+        return (raffle, config, subId);
     }
 }

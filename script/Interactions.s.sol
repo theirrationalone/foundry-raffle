@@ -32,8 +32,6 @@ contract CreateSubscription is Script {
 }
 
 contract FundSubscription is Script {
-    error FundSubscription__FailedToFundLinkToken();
-
     uint96 FUND_AMOUNT = 3 ether;
 
     function fundSubscription(
@@ -48,13 +46,8 @@ contract FundSubscription is Script {
             vm.stopBroadcast();
         } else {
             vm.startBroadcast(_deployerKey);
-            bool success =
-                LinkToken(_linkTokenAddress).transferAndCall(_vrfCoordinatorV2Address, FUND_AMOUNT, abi.encode(_subId));
+            LinkToken(_linkTokenAddress).transferAndCall(_vrfCoordinatorV2Address, FUND_AMOUNT, abi.encode(_subId));
             vm.stopBroadcast();
-
-            if (!success) {
-                revert FundSubscription__FailedToFundLinkToken();
-            }
         }
     }
 
