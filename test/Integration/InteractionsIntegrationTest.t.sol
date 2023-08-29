@@ -50,7 +50,7 @@ contract InteractionsTest is Test {
         addConsumer.run();
     }
 
-    function testInteractionsScriptContractsWorksInterdependently() public skipTest {
+    function testInteractionsScriptContractsWorksInterdependently() public {
         VRFCoordinatorV2Mock vrfCoordinator = VRFCoordinatorV2Mock(s_vrfCoordinatorV2Address);
 
         CreateSubscription createSubscription = new CreateSubscription();
