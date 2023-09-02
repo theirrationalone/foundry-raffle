@@ -136,7 +136,7 @@ or
 forge script script/Interactions.s.sol:<SCRIPT_CONTRACT_NAME> --rpc-url sepolia  --private-key $PRIVATE_KEY  --broadcast
 ```
 
-### addPerson
+### performUpkeep
 
 ```
 cast send <RAFFLE_CONTRACT_ADDRESS> "performUpkeep(string)" 0x0 --rpc-url $ANVIL_RPC_URL --private-key $PRIVATE_KEY
